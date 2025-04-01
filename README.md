@@ -15,12 +15,13 @@ By linking GitHub commits, branches, and pull requests (PRs) with Jira issues, y
 1. Install the **GitHub for Jira** app from the Atlassian Marketplace.
 2. Authorize the app to access your GitHub repository.
 3. Link your Jira project to the GitHub repository.
+You can find all the docs **[here](https://support.atlassian.com/jira-cloud-administration/docs/integrate-jira-software-with-github/)**
 
 ### 2️⃣ Use Jira Work Item Keys in GitHub
 To enable Jira to track commits, branches, and PRs, include the **Jira issue key** in:
-- Commit messages (e.g., `feat: Implement login functionality [PROJ-123]`)
+- Commit messages (e.g., `feat: Implement login functionality PROJ-123`)
 - Branch names (e.g., `feature/PROJ-123-login-page`)
-- PR titles (e.g., `Fix signup form validation [PROJ-456]`)
+- PR titles (e.g., `Fix signup form validation PROJ-456`)
 
 ### 3️⃣ Automation Rules Configuration
 The following Jira automation rules have been set up:
@@ -40,6 +41,7 @@ The following image illustrates the configured Jira workflow:
 
 ## 📂 Folder Structure
 ```
+├── docs/            # Documentation and setup guides
 ├── README.md        # Project documentation (this file)
 ```
 

@@ -27,8 +27,8 @@ pid_unique=`grep -o '\[pid [0-9]*\]' "$logfile" | grep -o '[0-9]*' | sort -u`
 # Count the number of new lines
 pid_quantity=`grep -o '\[pid [0-9]*\]' "$logfile" | grep -o '[0-9]*' | sort -u | wc -l`
 
-# Writing all outputs to the output.txt file
-cat <<EOF > output.txt
+# Writing all outputs to the pid_script_output.txt file
+cat <<EOF > pid_script_output.txt
 Extract all PIDs from logfile: 
 $pid_all
 Extract only numbers:

@@ -2,21 +2,21 @@
 
 # Check if a file was provided as an argument
 if [ $# -ne 1 ]; then
-    echo "Usage: $0 <password_file>"
+    echo "Usage: $0 <logfile>"
     exit 1
 fi
 
 # Store the file path
-PASSWORD_FILE=$1
+LOG_FILE=$1
 
 # Check if the file exists
-if [ ! -f "$PASSWORD_FILE" ]; then
-    echo "Error: File '$PASSWORD_FILE' not found."
+if [ ! -f "$LOG_FILE" ]; then
+    echo "Error: File '$LOG_FILE' not found."
     exit 1
 fi
 
 # Use grep to extract passwords from the file and process each one
-grep -oP "pass'\s*=>\s*'\K[^']+" "$PASSWORD_FILE" | while read -r password; do
+grep -oP "pass'\s*=>\s*'\K[^']+" "$LOG_FILE" | while read -r password; do
     # Initialize flags for each requirement
     length_ok=0
     has_uppercase=0

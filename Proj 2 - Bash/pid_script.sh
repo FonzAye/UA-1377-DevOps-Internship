@@ -22,10 +22,10 @@ pid_all=`grep -o '\[pid [0-9]*\]' "$logfile"`
 pid_numbers=`grep -o '\[pid [0-9]*\]' "$logfile" | grep -o '[0-9]*'`
 
 # Sort numbers and get rid of all the non-unique ones
-pid_unique=`grep -o '\[pid [0-9]*\]' "$logfile" | grep -o '[0-9]*' | sort -u`
+pid_unique=`grep -o '\[pid [0-9]*\]' "$logfile" | grep -o '[0-9]*' | uniq`
 
 # Count the number of new lines
-pid_quantity=`grep -o '\[pid [0-9]*\]' "$logfile" | grep -o '[0-9]*' | sort -u | wc -l`
+pid_quantity=`grep -o '\[pid [0-9]*\]' "$logfile" | grep -o '[0-9]*' | uniq | wc -l`
 
 # Writing all outputs to the pid_script_output.txt file
 cat <<EOF > pid_script_output.txt

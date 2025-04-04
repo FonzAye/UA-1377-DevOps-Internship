@@ -29,6 +29,10 @@ while read -r line; do
     fi
 done < <(grep -oP "'name'\s*=>\s'\K[^']+|\[pid\s*[0-9]*\]\s*\[[^\]]*\]" "$logfile" | uniq)
 
-for key in "${!services[@]}"; do
+cat <<EOF > service_script_output.txt
+List services and their status: 
+$(for key in "${!services[@]}"; do
     echo "$key: ${services[$key]}"
-done
+done)
+EOF
+

@@ -7,6 +7,27 @@ This project contains two Bash scripts designed for automation and data extracti
 
 ## 📌 Scripts Overview
 
+### 🏷️  `service_script.sh` - Service Status Extractor
+This script scans a log file to extract service names and their statuses. If a service is removed, it is marked as "Stopped"; otherwise, it is marked as "Active."
+
+**Usage:**
+```bash
+./service_script.sh <logfile>
+```
+**Example:**
+```bash
+./service_script.sh system.log
+```
+**Output:** (saved to `service_script_output.txt`)
+```
+List services and their status:
+ServiceA: Active
+ServiceB: Stopped
+ServiceC: Active
+```
+
+---
+
 ### 🔑 `password_script.sh` - Password Strength Checker
 This script checks passwords from a given file and evaluates their strength based on the following criteria:
 - At least **10 characters** long
@@ -72,13 +93,13 @@ Count the number of new lines:
    ```
 3. Give execution permissions to the scripts:
    ```bash
-   chmod +x password_script.sh pid_script.sh
+   chmod +x password_script.sh pid_script.sh service_script.sh
    ```
 4. Run the scripts with appropriate input files.
 
 ## 📝 Notes
-- Ensure the input files (`password_file` and `logfile`) exist before running the scripts.
-- The outputs are saved in `password_script_output.txt` and `pid_script_output.txt`.
+- Ensure the input files exist before running the scripts.
+- The outputs are saved in `password_script_output.txt`, `service_script_output.txt` and `pid_script_output.txt`.
 
 ## 📧 Contact
 For any questions or improvements, feel free to open an issue or submit a pull request! 🚀

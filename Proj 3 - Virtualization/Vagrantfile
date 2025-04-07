@@ -1,0 +1,145 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  # Define the base box for both VMs
+  config.vm.box = "ubuntu/focal64"
+
+  # VM resource allocation (applies to all VMs)
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "512"
+    vb.cpus = 1
+  end
+
+  node_first = 1
+  node_last = 3
+
+  (node_first..node_last).each do |i|
+    config.vm.define "sftp-#{i}" do |node|
+      node.vm.hostname = "sftp-#{i}"
+      node.vm.network "private_network", ip: "192.168.56.#{10 + i}"
+      
+      # Sync the keys directory from host to guest
+      node.vm.synced_folder "./keys", "/vagrant/keys"
+      
+      node.vm.provision "shell",
+        inline: <<-SHELL
+          echo "export NODE_ID=#{i}" >> /home/vagrant/.bashrc
+          echo "export NODE_FIRST=#{node_first}" >> /home/vagrant/.bashrc
+          echo "export NODE_LAST=#{node_last}" >> /home/vagrant/.bashrc
+          echo "hello from node #{i}, NODE_ID will be available in future shells"
+        SHELL
+
+
+      node.vm.provision "shell", inline: <<-SHELL
+        #!/bin/bash
+        # Purpose: Configure SFTP server on Ubuntu with key-based authentication
+        # This script is idempotent and can be safely run multiple times
+
+        # Exit immediately if a command exits with a non-zero status
+        set -e
+
+        # Function to check if a user exists
+        user_exists() {
+            id "$1" &>/dev/null
+            return $?
+        }
+
+        # Function to check if a line exists in a file
+        line_exists() {
+            grep -q "^$1" "$2" 2>/dev/null
+            return $?
+        }
+
+        # Install OpenSSH server
+        apt-get update && apt-get install -y openssh-server
+        
+        echo "Starting SFTP server configuration..."
+
+        # Step 1: Create sftpuser if it doesn't exist
+        if ! user_exists "sftpuser"; then
+            echo "Creating sftpuser..."
+            useradd -m -d /home/sftpuser -s /bin/bash  sftpuser
+            echo "User sftpuser created with home directory /home/sftpuser"
+        else
+            echo "User sftpuser already exists"
+        fi
+
+        # Step 2: Set proper permissions for the user's home directory
+        echo "Setting proper permissions for /home/sftpuser..."
+        chown root:root /home/sftpuser
+        chmod 755 /home/sftpuser
+
+        # Step 3: Create a directory where the user will have write permissions
+        if [ ! -d "/home/sftpuser/upload" ]; then
+            echo "Creating writable upload directory..."
+            mkdir -p /home/sftpuser/upload
+        fi
+
+        # Step 4: Set permissions for the upload directory
+        echo "Setting permissions for the upload directory..."
+        chown sftpuser:sftpuser /home/sftpuser/upload
+        chmod 755 /home/sftpuser/upload
+
+        # Step 5: Set up the .ssh directory for key-based authentication
+        if [ ! -d "/home/sftpuser/.ssh" ]; then
+            echo "Creating .ssh directory..."
+            mkdir -p /home/sftpuser/.ssh
+        fi
+
+        # Step 6: Set proper permissions for .ssh directory
+        echo "Setting proper permissions for .ssh directory..."
+        chown sftpuser:sftpuser /home/sftpuser/.ssh
+        chmod 700 /home/sftpuser/.ssh
+
+        # Step 7: Create or update authorized_keys file with a sample key
+        if [ -f "/vagrant/keys/sftp_key.pub" ]; then
+            cat /vagrant/keys/sftp_key.pub >> /home/sftpuser/.ssh/authorized_keys
+        else
+            echo "Warning: Public key file not found at /vagrant/keys/sftp_key.pub"
+        fi
+
+        # Adding private key if exists
+        if [ -f "/vagrant/keys/sftp_key" ]; then
+            cp /vagrant/keys/sftp_key /home/sftpuser/.ssh/sftp_key
+            chmod 600 /home/sftpuser/.ssh/sftp_key
+        fi
+
+        # Step 8: Set proper permissions for authorized_keys file
+        echo "Setting proper permissions for authorized_keys file..."
+        chmod 600 /home/sftpuser/.ssh/authorized_keys
+        chown -R sftpuser:sftpuser /home/sftpuser/.ssh
+
+        # Step 9: Configure OpenSSH server for SFTP
+        SSHD_CONFIG="/etc/ssh/sshd_config"
+
+        # Backup the original sshd_config file if not already done
+        if [ ! -f "${SSHD_CONFIG}.bak" ]; then
+            echo "Backing up original sshd_config..."
+            cp "$SSHD_CONFIG" "${SSHD_CONFIG}.bak"
+        fi
+
+        # Add user-specific configuration for sftpuser
+        if ! grep -q "Match User sftpuser" /etc/ssh/sshd_config; then
+          sudo tee -a /etc/ssh/sshd_config > /dev/null <<-EOF
+# SFTP Configuration for sftpuser
+Match User sftpuser
+    PasswordAuthentication no
+    PermitTTY yes
+    AllowTcpForwarding yes
+EOF
+          echo "SFTP configuration added to sshd_config"
+        else
+          echo "SFTP configuration already exists in sshd_config"
+        fi
+
+        # Step 10: Restart SSH service to apply changes
+        echo "Restarting SSH service..."
+        systemctl restart ssh
+
+        echo "SFTP server configuration completed!"
+        echo "Use the following command to connect: sftp -i /path/to/private_key sftpuser@your_server_ip"
+      SHELL
+    end
+  end
+end

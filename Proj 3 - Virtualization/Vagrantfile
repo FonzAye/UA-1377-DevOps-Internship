@@ -12,32 +12,22 @@ Vagrant.configure("2") do |config|
   end
 
   node_first = 1
-  node_last = 3
+  node_last = 2
 
   (node_first..node_last).each do |i|
     config.vm.define "sftp-#{i}" do |node|
       node.vm.hostname = "sftp-#{i}"
       node.vm.network "private_network", ip: "192.168.56.#{10 + i}"
-      
+
       # Sync the keys directory from host to guest
       node.vm.synced_folder "./keys", "/vagrant/keys"
-      
-      node.vm.provision "shell",
-        inline: <<-SHELL
-          echo "export NODE_ID=#{i}" >> /home/vagrant/.bashrc
-          echo "export NODE_FIRST=#{node_first}" >> /home/vagrant/.bashrc
-          echo "export NODE_LAST=#{node_last}" >> /home/vagrant/.bashrc
-          echo "hello from node #{i}, NODE_ID will be available in future shells"
-        SHELL
-
 
       node.vm.provision "shell", inline: <<-SHELL
         #!/bin/bash
         # Purpose: Configure SFTP server on Ubuntu with key-based authentication
         # This script is idempotent and can be safely run multiple times
 
-        # Exit immediately if a command exits with a non-zero status
-        set -e
+        set -e  # Exit immediately if a command exits with a non-zero status
 
         # Function to check if a user exists
         user_exists() {
@@ -45,15 +35,10 @@ Vagrant.configure("2") do |config|
             return $?
         }
 
-        # Function to check if a line exists in a file
-        line_exists() {
-            grep -q "^$1" "$2" 2>/dev/null
-            return $?
-        }
-
         # Install OpenSSH server
+        export DEBIAN_FRONTEND=noninteractive
         apt-get update && apt-get install -y openssh-server
-        
+
         echo "Starting SFTP server configuration..."
 
         # Step 1: Create sftpuser if it doesn't exist
@@ -67,7 +52,7 @@ Vagrant.configure("2") do |config|
 
         # Step 2: Set proper permissions for the user's home directory
         echo "Setting proper permissions for /home/sftpuser..."
-        chown root:root /home/sftpuser
+        chown sftpuser:sftpuser /home/sftpuser
         chmod 755 /home/sftpuser
 
         # Step 3: Create a directory where the user will have write permissions
@@ -76,21 +61,38 @@ Vagrant.configure("2") do |config|
             mkdir -p /home/sftpuser/upload
         fi
 
-        # Step 4: Set permissions for the upload directory
+        # Step 4: Create a scripts directory
+        if [ ! -d "/home/sftpuser/scripts" ]; then
+            echo "Creating scripts directory..."
+            mkdir -p /home/sftpuser/scripts
+        fi
+        echo "Setting permissions for the scripts directory..."
+        chown sftpuser:sftpuser /home/sftpuser/scripts
+        chmod 755 /home/sftpuser/scripts
+
+        # Add script.sh from shared folder if exists (avoid duplicate appends)
+        if [ -f "/vagrant/script.sh" ]; then
+            cp /vagrant/script.sh /home/sftpuser/scripts/script.sh
+        else
+            echo "Warning: script.sh file not found at /vagrant/script.sh"
+        fi
+
+        # Make script.sh executable
+        chmod +x /home/sftpuser/scripts/script.sh
+
+        # Step 5: Set permissions for the upload directory
         echo "Setting permissions for the upload directory..."
         chown sftpuser:sftpuser /home/sftpuser/upload
         chmod 755 /home/sftpuser/upload
 
-        # Step 5: Set up the .ssh directory for key-based authentication
+        # Step 6: Set up the .ssh directory for key-based authentication
         if [ ! -d "/home/sftpuser/.ssh" ]; then
             echo "Creating .ssh directory..."
             mkdir -p /home/sftpuser/.ssh
         fi
-
-        # Step 6: Set proper permissions for .ssh directory
         echo "Setting proper permissions for .ssh directory..."
         chown sftpuser:sftpuser /home/sftpuser/.ssh
-        chmod 700 /home/sftpuser/.ssh
+        chmod 755 /home/sftpuser/.ssh
 
         # Step 7: Create or update authorized_keys file with a sample key
         if [ -f "/vagrant/keys/sftp_key.pub" ]; then
@@ -99,16 +101,17 @@ Vagrant.configure("2") do |config|
             echo "Warning: Public key file not found at /vagrant/keys/sftp_key.pub"
         fi
 
-        # Adding private key if exists
+        # Add private key if exists
         if [ -f "/vagrant/keys/sftp_key" ]; then
             cp /vagrant/keys/sftp_key /home/sftpuser/.ssh/sftp_key
+            chown sftpuser:sftpuser /home/sftpuser/.ssh/sftp_key
             chmod 600 /home/sftpuser/.ssh/sftp_key
         fi
 
         # Step 8: Set proper permissions for authorized_keys file
         echo "Setting proper permissions for authorized_keys file..."
+        chown sftpuser:sftpuser /home/sftpuser/.ssh/authorized_keys
         chmod 600 /home/sftpuser/.ssh/authorized_keys
-        chown -R sftpuser:sftpuser /home/sftpuser/.ssh
 
         # Step 9: Configure OpenSSH server for SFTP
         SSHD_CONFIG="/etc/ssh/sshd_config"
@@ -140,6 +143,16 @@ EOF
         echo "SFTP server configuration completed!"
         echo "Use the following command to connect: sftp -i /path/to/private_key sftpuser@your_server_ip"
       SHELL
+
+      # Exporting environment variables into .bashrc
+      node.vm.provision "shell",
+        inline: <<-SHELL
+          echo "export NODE_ID=#{i}" >> /home/sftpuser/.bashrc
+          echo "export NODE_FIRST=#{node_first}" >> /home/sftpuser/.bashrc
+          echo "export NODE_LAST=#{node_last}" >> /home/sftpuser/.bashrc
+          echo "hello from node #{i}, NODE_ID will be available in future shells"
+        SHELL
     end
   end
 end
+

@@ -1,0 +1,47 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  # Use the Ubuntu 20.04 (Focal Fossa) base box
+  config.vm.box = "ubuntu/focal64"
+
+  # Global VirtualBox settings for all VMs
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "512"   # Assign 512MB of RAM
+    vb.cpus = 1         # Allocate 1 CPU
+  end
+
+  node_first = 1
+  node_last = 3
+
+  (node_first..node_last).each do |i|
+    config.vm.define "sftp-#{i}" do |node|
+      node.vm.hostname = "sftp-#{i}"
+      node.vm.network "private_network", ip: "192.168.56.#{10 + i}"
+
+      # Mount the host 'keys' and 'scripts' directories inside guest
+      node.vm.synced_folder "./keys", "/vagrant/keys"
+      node.vm.synced_folder "./scripts", "/vagrant/scripts"
+
+
+      # Provision using external shell script
+      node.vm.provision "shell" do |s|
+        s.path = "./scripts/provision_sftp.sh"
+        s.args = [i, node_first, node_last]
+      end
+
+      # Exporting environment variables to be sourced later
+      node.vm.provision "shell", inline: <<-SHELL
+        echo "export NODE_ID=#{i}" >> /opt/env-vars
+        echo "export NODE_FIRST=#{node_first}" >> /opt/env-vars
+        echo "export NODE_LAST=#{node_last}" >> /opt/env-vars
+
+        # Ensure env-vars are sourced in bashrc
+        grep -q 'source /opt/env-vars' /home/vagrant/.bashrc || echo 'source /opt/env-vars' >> /home/vagrant/.bashrc
+
+        echo "hello from node #{i}, NODE_ID will be available in future shells"
+      SHELL
+    end
+  end
+end
+

@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log Viewer</title>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,7 +17,7 @@
             background-color: #f5f5f5;
         }
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             background-color: white;
             padding: 20px;
@@ -39,22 +43,16 @@
             border-radius: 4px;
             font-size: 16px;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-        tr:hover {
-            background-color: #f5f5f5;
+        #refresh-button {
+            display: block;
+            margin: 10px auto 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
         }
         .loading {
             text-align: center;
@@ -67,7 +65,7 @@
 <body>
     <div class="container">
         <h1>Log Viewer</h1>
-        
+
         <div class="form-group">
             <label for="creator-select">Select Creator:</label>
             <select id="creator-select">
@@ -75,23 +73,11 @@
                 <option value="{{ creator }}" {% if creator == selected_creator %}selected{% endif %}>{{ creator }}</option>
                 {% endfor %}
             </select>
-	    <button id="refresh-button" style="
-			display: block;
-    			margin: 0 auto 20px;
-    			padding: 10px 20px;
-    			font-size: 16px;
-    			background-color: #007bff;
-    			color: white;
-    			border: none;
-    			border-radius: 4px;
-    			cursor: pointer;">
-		    🔄 Refresh Logs
-	    </button>
-
+            <button id="refresh-button">🔄 Refresh Logs</button>
         </div>
-        
+
         <div id="log-container">
-            <table>
+            <table id="log-table" class="display">
                 <thead>
                     <tr>
                         <th>Date</th>
@@ -112,69 +98,84 @@
         </div>
     </div>
 
+    <!-- jQuery + DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
     <script>
-        document.getElementById('creator-select').addEventListener('change', function() {
-            const selectedCreator = this.value;
-            fetchLogs(selectedCreator);
-        });
+        let dataTable;
 
         function fetchLogs(creator) {
-            // Show loading state
-            document.getElementById('log-entries').innerHTML = '<tr><td colspan="3" class="loading">Loading logs...</td></tr>';
+            $('#log-entries').html('<tr><td colspan="4" class="loading">Loading logs...</td></tr>');
             
-            // Fetch logs for the selected creator
             fetch(`/api/logs?creator=${creator}`)
                 .then(response => response.json())
                 .then(logs => {
-                    const logEntriesElement = document.getElementById('log-entries');
-                    
+                    if (dataTable) {
+                        dataTable.destroy();
+                    }
+
                     if (logs.length === 0) {
-                        logEntriesElement.innerHTML = '<tr><td colspan="3" class="loading">No logs found for this creator.</td></tr>';
+                        $('#log-entries').html('<tr><td colspan="4" class="loading">No logs found for this creator.</td></tr>');
                         return;
                     }
-                    
-                    let html = '';
-                    logs.forEach(log => {
-                        html += `
-                            <tr>
-                                <td>${log.date}</td>
-                                <td>${log.time}</td>
-                                <td>${log.creator}</td>
-                            </tr>
-                        `;
+
+                    const rows = logs.map(log => `
+                        <tr>
+                            <td>${log.date}</td>
+                            <td>${log.time}</td>
+                            <td>${log.creator}</td>
+                        </tr>
+                    `).join('');
+
+                    $('#log-entries').html(rows);
+                    dataTable = $('#log-table').DataTable({
+                        pageLength: 100,
+                        order: [[1, 'desc']] // Sort by Time descending
                     });
-                    
-                    logEntriesElement.innerHTML = html;
                 })
                 .catch(error => {
                     console.error('Error fetching logs:', error);
-                    document.getElementById('log-entries').innerHTML = 
-                        '<tr><td colspan="3" class="loading">Error loading logs. Please try again.</td></tr>';
+                    $('#log-entries').html('<tr><td colspan="4" class="loading">Error loading logs.</td></tr>');
                 });
         }
-	document.getElementById('refresh-button').addEventListener('click', function () {
-		this.disabled = true;
-    		this.innerText = 'Refreshing...';
 
-		fetch('/api/refresh-logs?num_vms=3')
-			.then(response => response.json())
-        		.then(data => {
-				if (data.status === 'success') {
-					location.reload(); // Reload the page after successful refresh
-				} else {
-					alert('Error refreshing logs: ' + data.message);
-                			this.disabled = false;
-                			this.innerText = '🔄 Refresh Logs';
-				}
-			})
-			.catch(error => {
-				console.error('Error refreshing logs:', error);
-            			alert('Unexpected error. See console for details.');
-            			this.disabled = false;
-            			this.innerText = '🔄 Refresh Logs';
-			});
-	});
+        document.getElementById('creator-select').addEventListener('change', function () {
+            fetchLogs(this.value);
+        });
 
+        document.getElementById('refresh-button').addEventListener('click', function () {
+            const btn = this;
+            btn.disabled = true;
+            btn.innerText = 'Refreshing...';
+
+            fetch('/api/refresh-logs?num_vms=3')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        location.reload(); // or fetchLogs(...) again
+                    } else {
+                        alert('Error refreshing logs: ' + data.message);
+                        btn.disabled = false;
+                        btn.innerText = '🔄 Refresh Logs';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error refreshing logs:', error);
+                    alert('Unexpected error. See console for details.');
+                    btn.disabled = false;
+                    btn.innerText = '🔄 Refresh Logs';
+                });
+        });
+
+        // Initialize table on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            dataTable = $('#log-table').DataTable({
+                pageLength: 100,
+                order: [[1, 'desc']]
+            });
+        });
     </script>
 </body>
 </html>
+

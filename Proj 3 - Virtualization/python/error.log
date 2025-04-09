@@ -1,0 +1,140 @@
+2025-04-09 10:53:39,848 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-09 10:53:39,848 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-09 10:53:39,849 - INFO -  * Restarting with stat
+2025-04-09 10:53:39,984 - WARNING -  * Debugger is active!
+2025-04-09 10:53:39,985 - INFO -  * Debugger PIN: 125-600-024
+2025-04-09 10:54:32,565 - INFO - 127.0.0.1 - - [09/Apr/2025 10:54:32] "GET / HTTP/1.1" 200 -
+2025-04-09 10:54:37,529 - INFO - 127.0.0.1 - - [09/Apr/2025 10:54:37] "GET /api/refresh-logs?num_vms=3 HTTP/1.1" 200 -
+2025-04-09 10:54:37,540 - INFO - 127.0.0.1 - - [09/Apr/2025 10:54:37] "GET / HTTP/1.1" 200 -
+2025-04-09 13:25:22,390 - INFO - 127.0.0.1 - - [09/Apr/2025 13:25:22] "GET / HTTP/1.1" 200 -
+2025-04-09 13:25:29,337 - INFO - 127.0.0.1 - - [09/Apr/2025 13:25:29] "GET / HTTP/1.1" 200 -
+2025-04-09 13:26:03,288 - INFO - 127.0.0.1 - - [09/Apr/2025 13:26:03] "GET / HTTP/1.1" 200 -
+2025-04-09 13:29:12,537 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-09 13:29:12,537 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-09 13:29:12,537 - INFO -  * Restarting with stat
+2025-04-09 13:29:12,662 - WARNING -  * Debugger is active!
+2025-04-09 13:29:12,662 - INFO -  * Debugger PIN: 125-600-024
+2025-04-09 13:29:15,914 - INFO - 127.0.0.1 - - [09/Apr/2025 13:29:15] "GET / HTTP/1.1" 200 -
+2025-04-09 13:29:16,444 - INFO - 127.0.0.1 - - [09/Apr/2025 13:29:16] "GET / HTTP/1.1" 200 -
+2025-04-09 13:29:18,345 - INFO - 127.0.0.1 - - [09/Apr/2025 13:29:18] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 13:29:20,361 - INFO - 127.0.0.1 - - [09/Apr/2025 13:29:20] "GET /api/logs?creator=sftp-3 HTTP/1.1" 200 -
+2025-04-09 13:29:21,674 - INFO - 127.0.0.1 - - [09/Apr/2025 13:29:21] "GET /api/logs?creator=sftp-1 HTTP/1.1" 200 -
+2025-04-09 13:29:22,998 - INFO - 127.0.0.1 - - [09/Apr/2025 13:29:22] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 13:29:24,511 - INFO - 127.0.0.1 - - [09/Apr/2025 13:29:24] "GET /api/logs?creator=sftp-3 HTTP/1.1" 200 -
+2025-04-09 13:29:28,582 - INFO - 127.0.0.1 - - [09/Apr/2025 13:29:28] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 13:29:33,866 - INFO - 127.0.0.1 - - [09/Apr/2025 13:29:33] "GET /api/logs?creator=sftp-1 HTTP/1.1" 200 -
+2025-04-09 13:29:37,796 - ERROR - Failed to connect to 192.168.56.11: [Errno None] Unable to connect to port 22 on 192.168.56.11
+2025-04-09 13:29:41,060 - ERROR - Failed to connect to 192.168.56.12: [Errno None] Unable to connect to port 22 on 192.168.56.12
+2025-04-09 13:29:44,324 - ERROR - Failed to connect to 192.168.56.13: [Errno None] Unable to connect to port 22 on 192.168.56.13
+2025-04-09 13:29:44,324 - INFO - 127.0.0.1 - - [09/Apr/2025 13:29:44] "GET /api/refresh-logs?num_vms=3 HTTP/1.1" 200 -
+2025-04-09 13:29:44,334 - INFO - 127.0.0.1 - - [09/Apr/2025 13:29:44] "GET / HTTP/1.1" 200 -
+2025-04-09 13:29:49,755 - INFO - 127.0.0.1 - - [09/Apr/2025 13:29:49] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 13:29:51,456 - INFO - 127.0.0.1 - - [09/Apr/2025 13:29:51] "GET /api/logs?creator=sftp-3 HTTP/1.1" 200 -
+2025-04-09 13:29:52,637 - INFO - 127.0.0.1 - - [09/Apr/2025 13:29:52] "GET /api/logs?creator=sftp-1 HTTP/1.1" 200 -
+2025-04-09 13:29:55,794 - INFO - 127.0.0.1 - - [09/Apr/2025 13:29:55] "GET /api/logs?creator=sftp-3 HTTP/1.1" 200 -
+2025-04-09 13:29:56,821 - INFO - 127.0.0.1 - - [09/Apr/2025 13:29:56] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 13:29:58,477 - INFO - 127.0.0.1 - - [09/Apr/2025 13:29:58] "GET /api/logs?creator=sftp-1 HTTP/1.1" 200 -
+2025-04-09 13:30:00,141 - INFO - 127.0.0.1 - - [09/Apr/2025 13:30:00] "GET /api/logs?creator=sftp-3 HTTP/1.1" 200 -
+2025-04-09 13:30:01,895 - INFO - 127.0.0.1 - - [09/Apr/2025 13:30:01] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 13:30:02,449 - INFO - 127.0.0.1 - - [09/Apr/2025 13:30:02] "GET /api/logs?creator=sftp-1 HTTP/1.1" 200 -
+2025-04-09 13:33:58,331 - INFO - 127.0.0.1 - - [09/Apr/2025 13:33:58] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 13:34:04,255 - INFO - 127.0.0.1 - - [09/Apr/2025 13:34:04] "GET /api/logs?creator=sftp-3 HTTP/1.1" 200 -
+2025-04-09 13:34:05,128 - INFO - 127.0.0.1 - - [09/Apr/2025 13:34:05] "GET /api/logs?creator=sftp-1 HTTP/1.1" 200 -
+2025-04-09 13:37:26,195 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-09 13:37:26,195 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-09 13:37:26,195 - INFO -  * Restarting with stat
+2025-04-09 13:37:26,317 - WARNING -  * Debugger is active!
+2025-04-09 13:37:26,318 - INFO -  * Debugger PIN: 125-600-024
+2025-04-09 13:37:28,750 - INFO - 127.0.0.1 - - [09/Apr/2025 13:37:28] "GET / HTTP/1.1" 200 -
+2025-04-09 13:37:30,544 - INFO - 127.0.0.1 - - [09/Apr/2025 13:37:30] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 13:37:32,203 - INFO - 127.0.0.1 - - [09/Apr/2025 13:37:32] "GET /api/logs?creator=sftp-3 HTTP/1.1" 200 -
+2025-04-09 13:37:33,267 - INFO - 127.0.0.1 - - [09/Apr/2025 13:37:33] "GET /api/logs?creator=sftp-1 HTTP/1.1" 200 -
+2025-04-09 13:37:36,096 - INFO - 127.0.0.1 - - [09/Apr/2025 13:37:36] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 13:37:37,077 - INFO - 127.0.0.1 - - [09/Apr/2025 13:37:37] "GET /api/logs?creator=sftp-3 HTTP/1.1" 200 -
+2025-04-09 13:37:37,911 - INFO - 127.0.0.1 - - [09/Apr/2025 13:37:37] "GET /api/logs?creator=sftp-1 HTTP/1.1" 200 -
+2025-04-09 13:37:49,834 - INFO - 127.0.0.1 - - [09/Apr/2025 13:37:49] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 13:37:52,235 - INFO - 127.0.0.1 - - [09/Apr/2025 13:37:52] "GET /api/logs?creator=sftp-3 HTTP/1.1" 200 -
+2025-04-09 13:37:53,914 - INFO - 127.0.0.1 - - [09/Apr/2025 13:37:53] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 13:37:55,559 - INFO - 127.0.0.1 - - [09/Apr/2025 13:37:55] "GET /api/logs?creator=sftp-1 HTTP/1.1" 200 -
+2025-04-09 13:37:59,483 - INFO - 127.0.0.1 - - [09/Apr/2025 13:37:59] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 13:38:00,119 - INFO - 127.0.0.1 - - [09/Apr/2025 13:38:00] "GET /api/logs?creator=sftp-3 HTTP/1.1" 200 -
+2025-04-09 13:38:00,991 - INFO - 127.0.0.1 - - [09/Apr/2025 13:38:00] "GET /api/logs?creator=sftp-1 HTTP/1.1" 200 -
+2025-04-09 13:40:58,796 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-09 13:40:58,796 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-09 13:40:58,797 - INFO -  * Restarting with stat
+2025-04-09 13:40:58,922 - WARNING -  * Debugger is active!
+2025-04-09 13:40:58,922 - INFO -  * Debugger PIN: 125-600-024
+2025-04-09 13:41:00,455 - INFO - 127.0.0.1 - - [09/Apr/2025 13:41:00] "GET / HTTP/1.1" 200 -
+2025-04-09 13:41:02,604 - INFO - 127.0.0.1 - - [09/Apr/2025 13:41:02] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 13:41:04,407 - INFO - 127.0.0.1 - - [09/Apr/2025 13:41:04] "GET /api/logs?creator=sftp-3 HTTP/1.1" 200 -
+2025-04-09 13:41:05,413 - INFO - 127.0.0.1 - - [09/Apr/2025 13:41:05] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 13:41:06,061 - INFO - 127.0.0.1 - - [09/Apr/2025 13:41:06] "GET /api/logs?creator=sftp-1 HTTP/1.1" 200 -
+2025-04-09 13:45:46,911 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-09 13:45:46,911 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-09 13:45:46,911 - INFO -  * Restarting with stat
+2025-04-09 13:45:47,035 - WARNING -  * Debugger is active!
+2025-04-09 13:45:47,035 - INFO -  * Debugger PIN: 125-600-024
+2025-04-09 13:45:48,595 - INFO - 127.0.0.1 - - [09/Apr/2025 13:45:48] "GET / HTTP/1.1" 200 -
+2025-04-09 13:45:53,974 - INFO - 127.0.0.1 - - [09/Apr/2025 13:45:53] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 13:45:56,215 - INFO - 127.0.0.1 - - [09/Apr/2025 13:45:56] "GET /api/logs?creator=sftp-3 HTTP/1.1" 200 -
+2025-04-09 13:45:59,231 - INFO - 127.0.0.1 - - [09/Apr/2025 13:45:59] "GET /api/logs?creator=sftp-1 HTTP/1.1" 200 -
+2025-04-09 13:46:00,338 - INFO - 127.0.0.1 - - [09/Apr/2025 13:46:00] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 13:46:01,490 - INFO - 127.0.0.1 - - [09/Apr/2025 13:46:01] "GET /api/logs?creator=sftp-3 HTTP/1.1" 200 -
+2025-04-09 13:46:02,980 - INFO - 127.0.0.1 - - [09/Apr/2025 13:46:02] "GET /api/logs?creator=sftp-1 HTTP/1.1" 200 -
+2025-04-09 13:49:08,245 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-09 13:49:08,245 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-09 13:49:08,245 - INFO -  * Restarting with stat
+2025-04-09 13:49:08,369 - WARNING -  * Debugger is active!
+2025-04-09 13:49:08,369 - INFO -  * Debugger PIN: 125-600-024
+2025-04-09 13:49:12,154 - INFO - 127.0.0.1 - - [09/Apr/2025 13:49:12] "GET / HTTP/1.1" 200 -
+2025-04-09 13:49:14,080 - INFO - 127.0.0.1 - - [09/Apr/2025 13:49:14] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 13:49:15,865 - INFO - 127.0.0.1 - - [09/Apr/2025 13:49:15] "GET /api/logs?creator=sftp-3 HTTP/1.1" 200 -
+2025-04-09 13:49:17,310 - INFO - 127.0.0.1 - - [09/Apr/2025 13:49:17] "GET /api/logs?creator=sftp-1 HTTP/1.1" 200 -
+2025-04-09 13:52:37,472 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-09 13:52:37,473 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-09 13:52:37,473 - INFO -  * Restarting with stat
+2025-04-09 13:52:37,596 - WARNING -  * Debugger is active!
+2025-04-09 13:52:37,596 - INFO -  * Debugger PIN: 125-600-024
+2025-04-09 13:52:40,345 - INFO - 127.0.0.1 - - [09/Apr/2025 13:52:40] "GET / HTTP/1.1" 200 -
+2025-04-09 13:52:42,656 - INFO - 127.0.0.1 - - [09/Apr/2025 13:52:42] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 13:52:44,683 - INFO - 127.0.0.1 - - [09/Apr/2025 13:52:44] "GET /api/logs?creator=sftp-3 HTTP/1.1" 200 -
+2025-04-09 13:52:47,850 - INFO - 127.0.0.1 - - [09/Apr/2025 13:52:47] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 13:52:49,133 - INFO - 127.0.0.1 - - [09/Apr/2025 13:52:49] "GET /api/logs?creator=sftp-1 HTTP/1.1" 200 -
+2025-04-09 13:53:49,167 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-09 13:53:49,167 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-09 13:53:49,167 - INFO -  * Restarting with stat
+2025-04-09 13:53:49,292 - WARNING -  * Debugger is active!
+2025-04-09 13:53:49,292 - INFO -  * Debugger PIN: 125-600-024
+2025-04-09 13:53:51,324 - INFO - 127.0.0.1 - - [09/Apr/2025 13:53:51] "GET / HTTP/1.1" 200 -
+2025-04-09 13:53:53,599 - INFO - 127.0.0.1 - - [09/Apr/2025 13:53:53] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 13:53:54,921 - INFO - 127.0.0.1 - - [09/Apr/2025 13:53:54] "GET /api/logs?creator=sftp-3 HTTP/1.1" 200 -
+2025-04-09 13:55:19,018 - INFO - 127.0.0.1 - - [09/Apr/2025 13:55:19] "GET /api/logs?creator=sftp-1 HTTP/1.1" 200 -
+2025-04-09 17:03:47,964 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-09 17:03:47,964 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-09 17:03:47,964 - INFO -  * Restarting with stat
+2025-04-09 17:03:48,091 - WARNING -  * Debugger is active!
+2025-04-09 17:03:48,092 - INFO -  * Debugger PIN: 125-600-024
+2025-04-09 17:03:50,021 - INFO - 127.0.0.1 - - [09/Apr/2025 17:03:50] "GET / HTTP/1.1" 200 -
+2025-04-09 17:03:52,230 - INFO - 127.0.0.1 - - [09/Apr/2025 17:03:52] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 17:03:53,614 - INFO - 127.0.0.1 - - [09/Apr/2025 17:03:53] "GET /api/logs?creator=sftp-3 HTTP/1.1" 200 -
+2025-04-09 17:04:37,481 - INFO - 127.0.0.1 - - [09/Apr/2025 17:04:37] "GET / HTTP/1.1" 200 -
+2025-04-09 17:06:04,778 - INFO - 127.0.0.1 - - [09/Apr/2025 17:06:04] "GET /api/logs?creator=sftp-1 HTTP/1.1" 200 -
+2025-04-09 17:06:10,650 - INFO - 127.0.0.1 - - [09/Apr/2025 17:06:10] "GET /api/logs?creator=sftp-2 HTTP/1.1" 200 -
+2025-04-09 17:06:12,071 - INFO - 127.0.0.1 - - [09/Apr/2025 17:06:12] "GET /api/logs?creator=sftp-1 HTTP/1.1" 200 -
+2025-04-09 17:06:26,923 - INFO - 127.0.0.1 - - [09/Apr/2025 17:06:26] "GET /api/refresh-logs?num_vms=3 HTTP/1.1" 200 -
+2025-04-09 17:06:26,933 - INFO - 127.0.0.1 - - [09/Apr/2025 17:06:26] "GET / HTTP/1.1" 200 -
+2025-04-09 20:18:23,340 - INFO - 127.0.0.1 - - [09/Apr/2025 20:18:23] "GET / HTTP/1.1" 200 -
+2025-04-09 20:18:28,661 - INFO - 127.0.0.1 - - [09/Apr/2025 20:18:28] "GET /api/refresh-logs?num_vms=3 HTTP/1.1" 200 -
+2025-04-09 20:18:28,671 - INFO - 127.0.0.1 - - [09/Apr/2025 20:18:28] "GET / HTTP/1.1" 200 -
+2025-04-09 20:19:00,116 - INFO - 127.0.0.1 - - [09/Apr/2025 20:19:00] "GET /api/refresh-logs?num_vms=3 HTTP/1.1" 200 -
+2025-04-09 20:19:00,128 - INFO - 127.0.0.1 - - [09/Apr/2025 20:19:00] "GET / HTTP/1.1" 200 -
+2025-04-09 20:19:07,336 - INFO - 127.0.0.1 - - [09/Apr/2025 20:19:07] "GET /api/logs?creator=sftp-3 HTTP/1.1" 200 -

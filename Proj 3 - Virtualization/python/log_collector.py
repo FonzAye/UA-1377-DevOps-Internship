@@ -28,7 +28,7 @@ def collect_logs(num_vms):
     os.makedirs("collected_logs", exist_ok=True)
     
     # Path to SSH private key
-    private_key_path = os.path.expanduser("../keys/sftp_key")
+    private_key_path = os.path.expanduser(".key")
     if not os.path.exists(private_key_path):
         logging.error(f"SSH private key not found at {private_key_path}")
         print(f"Error: SSH private key not found at {private_key_path}")

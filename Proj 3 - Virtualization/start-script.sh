@@ -20,5 +20,15 @@ else
 	echo "Private and Public keys already created"
 fi
 
+ENV_FILE="./python/.key"
+# Write private key to a .key file for Docker
+if [ ! -s $ENV_FILE ]; then
+	echo ".key file does not exist or is empty"
+	cat $SSH_KEY_PRIVATE > $ENV_FILE
+	echo "Privatkey added to .key file"
+else
+	echo ".key file exists and is not empty"
+fi
+
 # Starting VMs with Vagrant
-vagrant up
+#vagrant up

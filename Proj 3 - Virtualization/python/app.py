@@ -7,6 +7,8 @@ import glob
 from log_collector import collect_logs
 from collections import defaultdict
 
+from pprint import pprint
+
 
 app = Flask(__name__)
 
@@ -60,41 +62,48 @@ def get_log_entries(creator_id):
     
     return entries
 
+
 def parse_log_files():
-    """Parse all log files in the collected_logs directory at application startup"""
+    """Parse all log files in the collected_logs directory at application startup (no duplicate entries)"""
     global log_data, vm_identifiers
     log_dir = "./collected_logs/"
 
-    # Ensure the directory exists
     if not os.path.exists(log_dir):
         print(f"Warning: Directory {log_dir} does not exist")
         return
 
-    # Find all log files matching the pattern
     log_files = [f for f in os.listdir(log_dir) if f.startswith("entry-file_192.168.56.")]
+    
+    seen_entries = set()  # To store (timestamp_str, vm_id) pairs we've already processed
 
     for log_file in log_files:
         file_path = os.path.join(log_dir, log_file)
         try:
             with open(file_path, 'r') as f:
                 for line in f:
-                    # Expected format: 2025-04-08 15:25:01 sftp-2
-                    match = re.match(r'(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) ([\w-]+)', line.strip())
+                    match = re.match(r'(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\s+([\w-]+)', line.strip())
                     if match:
                         timestamp_str, vm_id = match.groups()
-                        timestamp = datetime.strptime(timestamp_str, '%Y-%m-%d %H:%M:%S')
-                        log_data.append({
-                            'timestamp': timestamp,
-                            'vm_id': vm_id
-                        })
-                        vm_identifiers.add(vm_id)
+                        entry_key = (timestamp_str, vm_id)
+
+                        if entry_key not in seen_entries:
+                            seen_entries.add(entry_key)
+                            timestamp = datetime.strptime(timestamp_str, '%Y-%m-%d %H:%M:%S')
+                            log_data.append({
+                                'timestamp': timestamp,
+                                'vm_id': vm_id
+                            })
+                            vm_identifiers.add(vm_id)
         except Exception as e:
             print(f"Error reading file {file_path}: {e}")
 
-    # Sort log data by timestamp
     log_data.sort(key=lambda x: x['timestamp'])
-    print(f"Parsed {len(log_data)} log entries from {len(log_files)} files")
+    print(f"Parsed {len(log_data)} unique log entries from {len(log_files)} files")
     print(f"Found VM identifiers: {vm_identifiers}")
+    pprint(log_data)
+
+
+
 
 
 @app.route('/')
@@ -131,6 +140,7 @@ def charts():
 
 @app.route('/api/logs')
 def get_logs_chart():
+    parse_log_files()
     """API endpoint to get log data filtered by date range and grouped by time granularity"""
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')

@@ -18,8 +18,8 @@ user_exists() {
 
 export DEBIAN_FRONTEND=noninteractive
 
-# Update and install OpenSSH server and cron
-apt-get update && apt-get install -y openssh-server cron
+# Update and install OpenSSH server and cron and rkhunter
+apt-get update && apt-get install -y openssh-server cron rkhunter
 
 # Create the sftpuser if it doesn't exist
 if ! user_exists "sftpuser"; then
@@ -103,6 +103,27 @@ if [ -x /home/sftpuser/scripts/cron.sh ]; then
     /home/sftpuser/scripts/cron.sh
     echo "Started cron script."
 fi
+
+# Edit rkhunter configuration
+RKHUNTER_CONFIG="/etc/rkhunter.conf"
+if [ ! -f "${RKHUNTER_CONFIG}.bak" ]; then
+    cp "${RKHUNTER_CONFIG}" "${RKHUNTER_CONFIG}.bak"
+fi
+
+# Perform the replacements
+sed -i 's/^WEB_CMD=.*/WEB_CMD=""/' /etc/rkhunter.conf
+sed -i 's/^UPDATE_MIRRORS=0/UPDATE_MIRRORS=1/' /etc/rkhunter.conf
+sed -i 's/^MIRRORS_MODE=1/MIRRORS_MODE=0/' /etc/rkhunter.conf
+
+# Verify the changes
+echo "Changes made:"
+grep -E '^WEB_CMD=|^UPDATE_MIRRORS=|^MIRRORS_MODE=' /etc/rkhunter.conf
+
+# Update rkhunter's data files
+rkhunter --update
+
+# Run a security scan and save the output to a log file
+rkhunter --check --sk --nocolors > /var/log/rkhunter.log || true
 
 echo "Provisioning for node ${NODE_ID} complete."
 

@@ -79,6 +79,28 @@ if [ ! -f "${SSHD_CONFIG}.bak" ]; then
     cp "${SSHD_CONFIG}" "${SSHD_CONFIG}.bak"
 fi
 
+# Check current setting
+CURRENT_SETTING=$(grep -i "^PermitRootLogin" "$SSHD_CONFIG" | tail -1)
+
+# Modify the configuration
+if [[ -z "$CURRENT_SETTING" ]]; then
+    # If no setting exists, add it
+    echo "PermitRootLogin no" >> "$SSHD_CONFIG"
+    echo "Added 'PermitRootLogin no' to config"
+else
+    # If setting exists, modify it
+    sed -i 's/^#*PermitRootLogin.*/PermitRootLogin no/i' "$SSHD_CONFIG"
+    echo "Changed '$CURRENT_SETTING' to 'PermitRootLogin no'"
+fi
+
+# Validate the config file syntax
+if ! sshd -t -f "$SSHD_CONFIG"; then
+    echo "Error: Invalid SSH configuration. Restoring backup..."
+    cp "$BACKUP_FILE" "$SSHD_CONFIG"
+    systemctl restart sshd
+    exit 1
+fi
+
 # Append configuration if not already present
 if ! grep -q "Match User sftpuser" "${SSHD_CONFIG}"; then
     cat <<EOF >> "${SSHD_CONFIG}"

@@ -207,4 +207,4 @@ def initialize_on_first_request():
 if __name__ == '__main__':
     # Parse logs at startup
     parse_log_files()
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)

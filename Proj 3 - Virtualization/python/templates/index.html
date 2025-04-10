@@ -43,22 +43,45 @@
             border-radius: 4px;
             font-size: 16px;
         }
-        #refresh-button {
-            display: block;
-            margin: 10px auto 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
         .loading {
             text-align: center;
             padding: 20px;
             font-style: italic;
             color: #666;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .button-group button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #refresh-button {
+            background-color: #007bff;
+            color: white;
+        }
+
+        #refresh-button:hover {
+            background-color: #0069d9;
+        }
+
+        #charts-button {
+            background-color: #28a745;
+            color: white;
+        }
+
+        #charts-button:hover {
+            background-color: #218838;
         }
     </style>
 </head>
@@ -73,7 +96,10 @@
                 <option value="{{ creator }}" {% if creator == selected_creator %}selected{% endif %}>{{ creator }}</option>
                 {% endfor %}
             </select>
-            <button id="refresh-button">🔄 Refresh Logs</button>
+            <div class="button-group">
+                <button id="refresh-button">🔄 Refresh Logs</button>
+                <button id="charts-button">📊 View Charts</button>
+            </div>
         </div>
 
         <div id="log-container">
@@ -107,8 +133,8 @@
 
         function fetchLogs(creator) {
             $('#log-entries').html('<tr><td colspan="4" class="loading">Loading logs...</td></tr>');
-            
-            fetch(`/api/logs?creator=${creator}`)
+
+            fetch(`/api/table_logs?creator=${creator}`)
                 .then(response => response.json())
                 .then(logs => {
                     if (dataTable) {
@@ -166,6 +192,10 @@
                     btn.disabled = false;
                     btn.innerText = '🔄 Refresh Logs';
                 });
+        });
+
+        document.getElementById('charts-button').addEventListener('click', function () {
+            window.location.href = '/charts';
         });
 
         // Initialize table on page load

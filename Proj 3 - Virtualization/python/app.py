@@ -7,9 +7,6 @@ import glob
 from log_collector import collect_logs
 from collections import defaultdict
 
-from pprint import pprint
-
-
 app = Flask(__name__)
 
 # Configuration
@@ -100,10 +97,6 @@ def parse_log_files():
     log_data.sort(key=lambda x: x['timestamp'])
     print(f"Parsed {len(log_data)} unique log entries from {len(log_files)} files")
     print(f"Found VM identifiers: {vm_identifiers}")
-    pprint(log_data)
-
-
-
 
 
 @app.route('/')
@@ -212,7 +205,6 @@ def initialize_on_first_request():
     # Only parse if we haven't already
     if not log_data:
         parse_log_files()
-
 
 if __name__ == '__main__':
     # Parse logs at startup

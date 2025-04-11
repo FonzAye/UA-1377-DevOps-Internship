@@ -106,8 +106,8 @@
                 <label for="end-date">End Date:</label>
                 <input type="text" id="end-date" placeholder="Select end date">
             </div>
-            
-            <button id="update-chart">Update Chart</button>
+	    <button id="update-chart">Update Chart</button>
+	    <button id="go-home">Go Home</button>
         </div>
         
         <div class="chart-container">
@@ -233,6 +233,10 @@
             // Initial chart update
             updateChart();
         });
+	document.getElementById('go-home').addEventListener('click', () => {
+		window.location.href = 'http://127.0.0.1:5000/';
+	});
+
     </script>
 </body>
 </html>

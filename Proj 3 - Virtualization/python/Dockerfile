@@ -1,18 +1,49 @@
-# Use the official lightweight Python image
-FROM python:3.11-slim
+# ------------------------
+# Stage 1: Build stage
+# ------------------------
+FROM python:3.11-alpine as builder
 
-# Set working directory inside the container
 WORKDIR /app
 
-# Copy all project files to the container
+# Install build dependencies and libffi for paramiko
+RUN apk add --no-cache \
+    build-base \
+    libffi-dev \
+    openssl-dev \
+    cargo
+
+# Pre-copy requirements to use Docker layer caching
+COPY requirements.txt .
+
+# Pre-build wheels for smaller final image
+RUN pip install --upgrade pip && \
+    pip wheel --no-cache-dir --wheel-dir /wheels -r requirements.txt
+
+# ------------------------
+# Stage 2: Minimal runtime stage
+# ------------------------
+FROM python:3.11-alpine
+
+WORKDIR /app
+
+# Install runtime dependencies only
+RUN apk add --no-cache \
+    libffi \
+    openssl
+
+# Copy wheels and install packages
+COPY --from=builder /wheels /wheels
+RUN pip install --no-cache-dir --no-index --find-links=/wheels /wheels/* && \
+    rm -rf /wheels
+
+# Copy only app files
 COPY . .
 
-# Install dependencies (adjust if you use requirements.txt)
-RUN pip install --no-cache-dir -r requirements.txt
+# Create non-root user
+RUN adduser -D appuser
+USER appuser
 
-# Expose the port your app runs on (default for Flask is 5000)
 EXPOSE 5000
 
-# Start the app
 CMD ["python", "app.py"]
 

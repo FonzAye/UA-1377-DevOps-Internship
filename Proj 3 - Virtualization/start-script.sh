@@ -32,3 +32,7 @@ fi
 
 # Starting VMs with Vagrant
 vagrant up
+
+cd python
+docker build -t python-image .
+docker-compose up -d

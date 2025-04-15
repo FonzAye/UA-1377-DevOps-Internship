@@ -45,8 +45,8 @@ The architecture includes:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/sftp-monitoring-system.git
-cd sftp-monitoring-system
+git clone https://github.com/FonzAye/UA-1377-DevOps-Internship.git
+cd Proj 3 - Virtualization
 ```
 
 2. Start the virtual machines:

@@ -31,4 +31,4 @@ else
 fi
 
 # Starting VMs with Vagrant
-#vagrant up
+vagrant up

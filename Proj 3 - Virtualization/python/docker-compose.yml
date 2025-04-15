@@ -2,7 +2,7 @@ version: '3'
 
 services:
   python-log-app:
-    image: alpine
+    image: python-image
     restart: always
     ports:
       - "5000:5000"

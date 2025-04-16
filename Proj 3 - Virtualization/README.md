@@ -49,20 +49,13 @@ git clone https://github.com/FonzAye/UA-1377-DevOps-Internship.git
 cd Proj 3 - Virtualization
 ```
 
-2. Start the virtual machines:
+2. Execute the start script:
 ```bash
 chmod +x start-script.sh
 ./start-script.sh
 ```
 
-3. Deploy the monitoring application:
-```bash
-cd python
-docker build -t python-image .
-docker-compose up -d
-```
-
-4. Access the web interface at `http://127.0.0.1:5000/`
+3. Access the web interface at `http://127.0.0.1:5000/`
 
 ## File Structure
 

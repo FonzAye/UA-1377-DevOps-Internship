@@ -8,13 +8,11 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: database
-#    volumes:
- #     - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
   backend:
-    build: source/
+    build: build/backend/
     restart: always
     container_name: backend
     depends_on:
@@ -32,13 +30,11 @@ services:
       MONGODB_CLUSTER: mongo
     ports:
       - "8080:8080"
-#    volumes:
-#      - "./backup:/backup"
 
   frontend:
     depends_on:
       - backend
-    build: source/frontend/
+    build: build/frontend/
     ports:
       - "3000:3000"
   
@@ -47,10 +43,3 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
-#    volumes:
-#      - redis_data:/data
-  
-#volumes:
-#  postgres_data:
-#  redis_data:
-

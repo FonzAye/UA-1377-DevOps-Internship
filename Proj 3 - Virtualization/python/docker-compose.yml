@@ -2,7 +2,9 @@ version: '3'
 
 services:
   python-log-app:
-    image: python-image
+    build:
+      context: ./
+      dockerfile: Dockerfile
     restart: always
     ports:
       - "5000:5000"

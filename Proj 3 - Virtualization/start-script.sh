@@ -14,7 +14,7 @@ SSH_KEY_PUBLIC="./keys/sftp_key.pub"
 # Check if SSH keys are in keys/ directory
 if [ ! -f $SSH_KEY_PRIVATE ] && [ ! -f $SSH_KEY_PUBLIC ]; then
 	echo "Private and Public keys do not exist, creating ..."
-	ssh-keygen -t ed25519 -f $SSH_KEY_PRIVATE -N "" -q
+	ssh-keygen -t rsa -f $SSH_KEY_PRIVATE -N "" -q
 	echo "SSH key generated in keys/ directory"
 else
 	echo "Private and Public keys already created"
@@ -28,11 +28,12 @@ if [ ! -s $ENV_FILE ]; then
 	echo "Privatkey added to .key file"
 else
 	echo ".key file exists and is not empty"
+	cat $SSH_KEY_PRIVATE > $ENV_FILE
+        echo "Privatkey added to .key file"
 fi
 
 # Starting VMs with Vagrant
 vagrant up
 
 cd python
-docker build -t python-image .
 docker-compose up -d

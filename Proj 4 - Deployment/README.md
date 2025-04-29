@@ -69,3 +69,5 @@ Make sure you have the following installed:
    - `postgres`
    - `redis`
    - `mongo`
+   
+4. **Access the frontend on http://localhost:3000**

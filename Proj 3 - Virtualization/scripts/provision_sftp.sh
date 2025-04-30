@@ -142,7 +142,7 @@ echo "Changes made:"
 grep -E '^WEB_CMD=|^UPDATE_MIRRORS=|^MIRRORS_MODE=' /etc/rkhunter.conf
 
 # Update rkhunter's data files and run a security scan and save the output to a log file
-rkhunter --update && rkhunter --check --sk --rwo --nocolors > /var/log/rkhunter.log || true
+rkhunter --update && rkhunter --check --sk
 
 echo "Provisioning for node ${NODE_ID} complete."
 

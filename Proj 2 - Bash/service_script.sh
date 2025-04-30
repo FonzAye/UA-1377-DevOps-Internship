@@ -36,3 +36,8 @@ $(for key in "${!services[@]}"; do
 done)
 EOF
 
+echo "List services and their status:"
+for key in "${!services[@]}"; do
+    echo "$key: ${services[$key]}"
+done
+

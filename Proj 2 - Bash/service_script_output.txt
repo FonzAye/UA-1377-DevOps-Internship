@@ -1,0 +1,4 @@
+List services and their status: 
+WordPress: Stopped
+OpenCart: Active
+Moodle: Stopped

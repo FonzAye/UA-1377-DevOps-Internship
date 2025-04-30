@@ -45,7 +45,7 @@ grep -oP "pass'\s*=>\s*'\K[^']+" "$LOG_FILE" | while read -r password; do
     fi
     
     # Check for at least 2 special characters
-    if [[ $(tr -d '[^[:alnum:][:space:]]' <<< "$password" | wc -c) -ge 2 ]]; then
+    if [[ $(tr -d '[:alnum:][:space:]' <<< "$password" | wc -c) -ge 2 ]]; then
 	has_special=1
     fi
 
@@ -68,4 +68,5 @@ grep -oP "pass'\s*=>\s*'\K[^']+" "$LOG_FILE" | while read -r password; do
     
     # Output the password and its strength to password_script_output.txt
     echo "Password: '$password' - $strength" >> password_script_output.txt
+    echo "Password: '$password' - $strength"
 done

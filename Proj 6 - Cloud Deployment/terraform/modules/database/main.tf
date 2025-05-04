@@ -30,3 +30,23 @@ resource "aws_db_instance" "database" {
 
   tags = each.value.tags
 }
+
+resource "aws_secretsmanager_secret" "db_secret" {
+  for_each = local.dbs
+
+  name = "db-credentials-${each.value.identifier}"
+  description = "Credentials for DB ${each.value.identifier}"
+}
+
+resource "aws_secretsmanager_secret_version" "db_secret_value" {
+  for_each = aws_secretsmanager_secret.db_secret
+
+  secret_id     = each.value.id
+  secret_string = jsonencode({
+    DB_USER = aws_db_instance.database[each.key].username
+    DB_HOST = aws_db_instance.database[each.key].address
+    DB_NAME = aws_db_instance.database[each.key].db_name
+    DB_PASS = aws_db_instance.database[each.key].password
+    DB_PORT = aws_db_instance.database[each.key].port
+  })
+}

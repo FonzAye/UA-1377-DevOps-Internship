@@ -18,11 +18,20 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+resource "random_id" "server" {
+  for_each = local.vms
+
+  byte_length = 4
+}
+
 resource "aws_instance" "test" {
   for_each = local.vms
 
   ami = data.aws_ami.ubuntu.id
   instance_type = each.value.instance_type
 
-  tags = each.value.tags
+  tags = {
+    Name = "vm-2-${random_id.server[each.key].hex}"
+  }
 }
+

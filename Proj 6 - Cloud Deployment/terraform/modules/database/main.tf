@@ -31,11 +31,20 @@ resource "aws_db_instance" "database" {
   tags = each.value.tags
 }
 
+resource "random_id" "server" {
+  keepers = {
+    # Generate a new id each time we switch to a new AMI id
+    secret_id = aws_db_instance.database.identifier
+  }
+
+  byte_length = 8
+}
+
 resource "aws_secretsmanager_secret" "db_secret" {
   for_each = local.dbs
 
-  name = "db-credentials-${each.value.identifier}"
-  description = "Credentials for DB ${each.value.identifier}"
+  name = "db-credentials-${each.value.identifier}-${random_id.server.hex}"
+  description = "Credentials for DB ${each.value.identifier}-${random_id.server.hex}"
 }
 
 resource "aws_secretsmanager_secret_version" "db_secret_value" {

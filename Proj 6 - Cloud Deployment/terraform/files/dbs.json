@@ -3,7 +3,7 @@
         {
             "allocated_storage": 20,
             "db_name": "postgres",
-            "identifier": "schedule-db",
+            "identifier": "schedule-db-1",
             "engine": "postgres",
             "instance_class": "db.t4g.micro",
             "username": "schedule_user",
@@ -19,7 +19,7 @@
         {
             "allocated_storage": 20,
             "db_name": "postgres",
-            "identifier": "schedule-db2",
+            "identifier": "schedule-db-2",
             "engine": "postgres",
             "instance_class": "db.t4g.micro",
             "username": "schedule_user",
